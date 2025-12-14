@@ -1,0 +1,102 @@
+{
+  "disaster_type": "flood",
+  "title": "Catastrophic Flooding in Houston Metropolitan Area",
+  "description": "Unprecedented rainfall over 48 hours has caused catastrophic flooding across the Houston metropolitan area. 20+ inches of rain has overwhelmed drainage systems. Major highways submerged. Thousands trapped in homes and vehicles. Multiple swift water rescue operations underway. Buffalo Bayou has exceeded flood stage by 15 feet. Chemical plants along Ship Channel at risk.",
+  "location": {
+    "primary": "Houston, Texas",
+    "affected_counties": [
+      "Harris County",
+      "Fort Bend County",
+      "Montgomery County",
+      "Galveston County",
+      "Brazoria County"
+    ],
+    "coordinates": {
+      "latitude": 29.7604,
+      "longitude": -95.3698
+    }
+  },
+  "time": {
+    "onset": "2024-12-12T18:00:00Z",
+    "peak": "2024-12-14T08:00:00Z",
+    "reported": "2024-12-14T10:30:00Z"
+  },
+  "severity": {
+    "rainfall_total_inches": 22.5,
+    "flood_level": "Major - 15 feet above flood stage",
+    "classification": "100+ year flood event"
+  },
+  "impact": {
+    "affected_population": 2800000,
+    "estimated_casualties": {
+      "deaths": 45,
+      "injuries": 850,
+      "missing": 120
+    },
+    "displaced_persons": 120000,
+    "homes_flooded": 45000,
+    "homes_destroyed": 2800
+  },
+  "infrastructure": {
+    "submerged_roads": 320,
+    "closed_highways": [
+      "I-10",
+      "I-45",
+      "US-59",
+      "Beltway 8"
+    ],
+    "power_outages": 450000,
+    "water_treatment_offline": true,
+    "sewage_overflow": true,
+    "hospital_status": {
+      "operational": 25,
+      "evacuated": 6,
+      "limited_access": 12
+    },
+    "shelters_open": 45,
+    "shelter_capacity": 15000
+  },
+  "immediate_needs": [
+    "Swift water rescue teams and boats",
+    "Emergency shelter and bedding",
+    "Potable water supplies",
+    "Food and medical supplies",
+    "Helicopter evacuation for stranded residents",
+    "Pumping equipment",
+    "Medical care for vulnerable populations"
+  ],
+  "hazards": {
+    "primary": [
+      "Rapidly rising water",
+      "Swift currents",
+      "Submerged vehicles and debris"
+    ],
+    "secondary": [
+      "Contaminated floodwater",
+      "Chemical releases from industrial sites",
+      "Mosquito-borne diseases",
+      "Mold and sanitation issues",
+      "Structural damage to buildings",
+      "More rain forecast"
+    ]
+  },
+  "weather": {
+    "current": "Heavy rain, 68°F",
+    "forecast": "Additional 6-10 inches rain next 24 hours"
+  },
+  "vulnerable_populations": [
+    "Elderly in nursing homes",
+    "Hospital patients",
+    "Low-income areas without transportation",
+    "People with disabilities"
+  ],
+  "resources_deployed": {
+    "national_guard": 1500,
+    "coast_guard": 8,
+    "fema_teams": 12,
+    "boats": 200,
+    "helicopters": 15
+  },
+  "source": "National Weather Service, Harris County Emergency Operations Center",
+  "verified": true
+}

@@ -1,0 +1,198 @@
+id: simple-ai-disaster
+namespace: disaster-response
+description: |
+  Simplified AI Agent workflow for quick disaster analysis.
+  Perfect for testing and demonstrations.
+
+inputs:
+  - name: disaster_title
+    type: STRING
+    required: true
+    defaults: "Earthquake in San Francisco"
+
+  - name: disaster_description
+    type: STRING
+    required: true
+    defaults: "6.5 magnitude earthquake struck downtown, multiple buildings damaged"
+
+  - name: disaster_type
+    type: STRING
+    required: true
+    defaults: "earthquake"
+
+  - name: latitude
+    type: FLOAT
+    required: true
+    defaults: 37.7749
+
+  - name: longitude
+    type: FLOAT
+    required: true
+    defaults: -122.4194
+
+  - name: affected_population
+    type: INT
+    required: true
+    defaults: 50000
+
+tasks:
+  # Step 1: AI analyzes the disaster
+  - id: ai-situation-summary
+    type: io.kestra.plugin.openai.ChatCompletion
+    apiKey: "{{ secret('OPENAI_API_KEY') }}"
+    model: gpt-4o-mini
+    messages:
+      - role: system
+        content: |
+          You are a disaster response analyst. Analyze the disaster and provide:
+          - Severity level (critical/high/medium/low)
+          - Key concerns
+          - Immediate needs
+
+          Output ONLY valid JSON.
+
+      - role: user
+        content: |
+          Disaster: {{ inputs.disaster_title }}
+          Type: {{ inputs.disaster_type }}
+          Details: {{ inputs.disaster_description }}
+          Location: {{ inputs.latitude }}, {{ inputs.longitude }}
+          Affected: {{ inputs.affected_population }} people
+
+          Output:
+          {
+            "severity_level": "critical|high|medium|low",
+            "severity_score": 0-100,
+            "key_concerns": ["concern1", "concern2"],
+            "immediate_needs": ["need1", "need2"],
+            "summary": "Brief overview"
+          }
+
+  # Step 2: AI determines priority actions
+  - id: ai-priority-actions
+    type: io.kestra.plugin.openai.ChatCompletion
+    apiKey: "{{ secret('OPENAI_API_KEY') }}"
+    model: gpt-4o-mini
+    temperature: 0.3
+    messages:
+      - role: system
+        content: |
+          You are an emergency coordinator. Determine the top 3 priority actions:
+          1. One RESCUE action
+          2. One MEDICAL action
+          3. One LOGISTICS action
+
+          Output ONLY valid JSON.
+
+      - role: user
+        content: |
+          Based on this analysis:
+          {{ outputs['ai-situation-summary'].choices[0].message.content }}
+
+          Determine priority actions:
+          {
+            "priority_area": "Most critical area name",
+            "recommended_actions": [
+              {
+                "type": "rescue",
+                "description": "Specific action",
+                "priority_score": 0-100,
+                "estimated_impact": number
+              },
+              {
+                "type": "medical",
+                "description": "Specific action",
+                "priority_score": 0-100,
+                "estimated_impact": number
+              },
+              {
+                "type": "logistics",
+                "description": "Specific action",
+                "priority_score": 0-100,
+                "estimated_impact": number
+              }
+            ]
+          }
+
+  # Step 3: Store in Supabase
+  - id: create-disaster-record
+    type: io.kestra.plugin.core.http.Request
+    uri: "{{ secret('SUPABASE_URL') }}/rest/v1/disasters"
+    method: POST
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ secret('SUPABASE_ANON_KEY') }}"
+      apikey: "{{ secret('SUPABASE_ANON_KEY') }}"
+      Prefer: return=representation
+    body: |
+      {
+        "title": "{{ inputs.disaster_title }}",
+        "description": "{{ inputs.disaster_description }}",
+        "disaster_type": "{{ inputs.disaster_type }}",
+        "severity": "{{ outputs['ai-situation-summary'].choices[0].message.content | jq '.severity_level' }}",
+        "latitude": {{ inputs.latitude }},
+        "longitude": {{ inputs.longitude }},
+        "affected_population": {{ inputs.affected_population }},
+        "status": "active"
+      }
+
+  # Step 4: Create AI summary record
+  - id: create-ai-summary
+    type: io.kestra.plugin.core.http.Request
+    uri: "{{ secret('SUPABASE_URL') }}/rest/v1/ai_summaries"
+    method: POST
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ secret('SUPABASE_ANON_KEY') }}"
+      apikey: "{{ secret('SUPABASE_ANON_KEY') }}"
+    body: |
+      {
+        "disaster_id": "{{ outputs['create-disaster-record'].body[0].id }}",
+        "summary": "{{ outputs['ai-situation-summary'].choices[0].message.content | jq '.summary' }}",
+        "key_insights": {{ outputs['ai-situation-summary'].choices[0].message.content | jq '.key_concerns' }},
+        "confidence_score": 0.9,
+        "model_used": "gpt-4o-mini"
+      }
+
+  # Step 5: Create priority actions
+  - id: create-actions
+    type: io.kestra.plugin.core.flow.EachSequential
+    value: "{{ outputs['ai-priority-actions'].choices[0].message.content | jq '.recommended_actions' }}"
+    tasks:
+      - id: insert-action
+        type: io.kestra.plugin.core.http.Request
+        uri: "{{ secret('SUPABASE_URL') }}/rest/v1/priority_actions"
+        method: POST
+        headers:
+          Content-Type: application/json
+          Authorization: "Bearer {{ secret('SUPABASE_ANON_KEY') }}"
+          apikey: "{{ secret('SUPABASE_ANON_KEY') }}"
+        body: |
+          {
+            "disaster_id": "{{ outputs['create-disaster-record'].body[0].id }}",
+            "action_type": "{{ parent.value.type }}",
+            "description": "{{ parent.value.description }}",
+            "priority_score": {{ parent.value.priority_score }},
+            "estimated_impact": {{ parent.value.estimated_impact }},
+            "status": "pending"
+          }
+
+  # Step 6: Success log
+  - id: log-success
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      ✅ {{ inputs.disaster_title }} analyzed and stored!
+
+      Severity: {{ outputs['ai-situation-summary'].choices[0].message.content | jq '.severity_level' }}
+      Priority Actions Created: 3
+      Disaster ID: {{ outputs['create-disaster-record'].body[0].id }}
+
+outputs:
+  - id: disaster_id
+    value: "{{ outputs['create-disaster-record'].body[0].id }}"
+
+  - id: analysis
+    value: "{{ outputs['ai-situation-summary'].choices[0].message.content }}"
+
+  - id: actions
+    value: "{{ outputs['ai-priority-actions'].choices[0].message.content }}"

@@ -1,0 +1,216 @@
+[
+  {
+    "source": "Twitter @EmergencySF",
+    "timestamp": "2024-03-15T14:29:00Z",
+    "location": {
+      "name": "San Francisco, California",
+      "latitude": 37.7749,
+      "longitude": -122.4194
+    },
+    "severity": "critical",
+    "disaster_type": "earthquake",
+    "message": "URGENT: Multiple buildings collapsed on Market Street. People trapped. Fires breaking out. Gas lines ruptured. Stay away from downtown area. First responders overwhelmed. #SFQuake #Emergency",
+    "affected_population": 15000,
+    "metadata": {
+      "platform": "Twitter",
+      "engagement": 15000,
+      "verified": true,
+      "sentiment": "urgent",
+      "keywords": ["buildings collapsed", "trapped", "fires", "gas leak"],
+      "image_count": 3,
+      "video_attached": true
+    }
+  },
+  {
+    "source": "Facebook Emergency Alerts Houston",
+    "timestamp": "2024-03-15T08:35:00Z",
+    "location": {
+      "name": "Houston, Texas",
+      "latitude": 29.7604,
+      "longitude": -95.3698
+    },
+    "severity": "critical",
+    "disaster_type": "flood",
+    "message": "FLASH FLOOD EMERGENCY - Water rising FAST in Memorial area. Cars floating. Evacuate NOW if you can safely. If trapped, move to highest point and call 911. Do NOT drive through water. #HoustonFlood",
+    "affected_population": 25000,
+    "metadata": {
+      "platform": "Facebook",
+      "shares": 8500,
+      "verified": true,
+      "location_tagged": true,
+      "keywords": ["flash flood", "evacuate", "trapped"],
+      "urgency_level": "immediate"
+    }
+  },
+  {
+    "source": "Reddit r/Miami",
+    "timestamp": "2024-03-15T16:42:00Z",
+    "location": {
+      "name": "Miami, Florida",
+      "latitude": 25.7617,
+      "longitude": -80.1918
+    },
+    "severity": "high",
+    "disaster_type": "hurricane",
+    "message": "Hurricane Milton approaching Cat 4. Winds already 60mph. Lost power in Coral Gables. Trees down everywhere. Storm surge flooding Brickell. This is worse than forecast. Stay inside!",
+    "affected_population": 180000,
+    "metadata": {
+      "platform": "Reddit",
+      "upvotes": 4200,
+      "comments": 856,
+      "verified_user": false,
+      "keywords": ["hurricane", "power outage", "storm surge", "flooding"],
+      "cross_posted": 12
+    }
+  },
+  {
+    "source": "Instagram @TokyoEmergency",
+    "timestamp": "2024-03-15T09:18:00Z",
+    "location": {
+      "name": "Tokyo, Japan",
+      "latitude": 35.6762,
+      "longitude": 139.6503
+    },
+    "severity": "medium",
+    "disaster_type": "earthquake",
+    "message": "Strong shaking in Shibuya! Buildings swaying. Train service stopped. Everyone taking shelter. Stay calm and follow evacuation procedures. #TokyoEarthquake #StaySafe 🚨",
+    "affected_population": 500000,
+    "metadata": {
+      "platform": "Instagram",
+      "likes": 28000,
+      "verified": true,
+      "hashtags": ["TokyoEarthquake", "StaySafe", "Emergency"],
+      "story_views": 120000,
+      "live_broadcast": true
+    }
+  },
+  {
+    "source": "Twitter @CaliforniaWildfires",
+    "timestamp": "2024-03-15T19:15:00Z",
+    "location": {
+      "name": "Paradise, California",
+      "latitude": 39.7596,
+      "longitude": -121.6219
+    },
+    "severity": "critical",
+    "disaster_type": "fire",
+    "message": "WILDFIRE ALERT: Fast-moving fire jumped Highway 99. Mandatory evacuation for zones 4-7. Winds 45mph pushing flames toward residential areas. Smoke visible from 50 miles away. Leave NOW. #ParadiseFire",
+    "affected_population": 35000,
+    "metadata": {
+      "platform": "Twitter",
+      "retweets": 12000,
+      "verified": true,
+      "fire_size_acres": 8500,
+      "containment": "0%",
+      "keywords": ["wildfire", "mandatory evacuation", "fast-moving"],
+      "air_quality_index": 425
+    }
+  },
+  {
+    "source": "TikTok @PhilippinesNews",
+    "timestamp": "2024-03-15T12:00:00Z",
+    "location": {
+      "name": "Manila, Philippines",
+      "latitude": 14.5995,
+      "longitude": 120.9842
+    },
+    "severity": "high",
+    "disaster_type": "flood",
+    "message": "Typhoon flooding Manila! Water chest-deep in Quezon City. People stranded on rooftops. Rescue boats can't reach everyone. Need help! Share this! #ManilaFloods #RescueNeeded",
+    "affected_population": 320000,
+    "metadata": {
+      "platform": "TikTok",
+      "views": 2500000,
+      "verified": false,
+      "video_duration": 45,
+      "keywords": ["typhoon", "flooding", "stranded", "rescue needed"],
+      "geotag_accuracy": "high"
+    }
+  },
+  {
+    "source": "WhatsApp Group - LA Emergency Network",
+    "timestamp": "2024-03-15T10:30:00Z",
+    "location": {
+      "name": "Los Angeles, California",
+      "latitude": 34.0522,
+      "longitude": -118.2437
+    },
+    "severity": "medium",
+    "disaster_type": "earthquake",
+    "message": "5.4 earthquake just hit LA. Felt from Santa Monica to Pasadena. Some broken windows downtown. Traffic lights out on Wilshire. Check your gas lines. Minor damage but everyone stay alert.",
+    "affected_population": 95000,
+    "metadata": {
+      "platform": "WhatsApp",
+      "group_size": 847,
+      "message_forwarded": true,
+      "verified": false,
+      "keywords": ["earthquake", "broken windows", "gas lines"],
+      "time_posted_vs_event": "3 minutes"
+    }
+  },
+  {
+    "source": "Telegram @EuropeEmergencies",
+    "timestamp": "2024-03-15T13:20:00Z",
+    "location": {
+      "name": "Athens, Greece",
+      "latitude": 37.9838,
+      "longitude": 23.7275
+    },
+    "severity": "high",
+    "disaster_type": "fire",
+    "message": "Major wildfire approaching Athens suburbs. Smoke blanketing city. Air quality hazardous. Schools closed. Stay indoors with windows shut. Evacuations ordered for northern neighborhoods. #AthensWildfire",
+    "affected_population": 145000,
+    "metadata": {
+      "platform": "Telegram",
+      "channel_subscribers": 450000,
+      "verified": true,
+      "fire_front_km": 15,
+      "keywords": ["wildfire", "air quality", "evacuations"],
+      "wind_conditions": "Dangerous - Meltemi winds"
+    }
+  },
+  {
+    "source": "Twitter @AustraliaEmergency",
+    "timestamp": "2024-03-15T04:45:00Z",
+    "location": {
+      "name": "Sydney, Australia",
+      "latitude": -33.8688,
+      "longitude": 151.2093
+    },
+    "severity": "medium",
+    "disaster_type": "fire",
+    "message": "Bushfire watch for Sydney outskirts. Total fire ban in effect. Temp 42°C, humidity 15%. Extreme fire danger. One spark could be catastrophic. Cancel outdoor plans. Monitor @NSWRFS. #AustraliaFires",
+    "affected_population": 78000,
+    "metadata": {
+      "platform": "Twitter",
+      "retweets": 5600,
+      "verified": true,
+      "fire_danger_rating": "Catastrophic",
+      "temperature_celsius": 42,
+      "keywords": ["bushfire", "total fire ban", "extreme danger"],
+      "wind_speed_kmh": 65
+    }
+  },
+  {
+    "source": "NextDoor - Seattle Neighborhoods",
+    "timestamp": "2024-03-15T07:00:00Z",
+    "location": {
+      "name": "Seattle, Washington",
+      "latitude": 47.6062,
+      "longitude": -122.3321
+    },
+    "severity": "low",
+    "disaster_type": "earthquake",
+    "message": "Did anyone else feel that earthquake around 7am? Woke me up. Seemed like maybe 4.0? Things rattled but no damage in my house. Anyone know magnitude?",
+    "affected_population": 8000,
+    "metadata": {
+      "platform": "NextDoor",
+      "reactions": 234,
+      "neighborhood": "Capitol Hill",
+      "verified": false,
+      "keywords": ["earthquake", "felt", "magnitude"],
+      "actual_magnitude": 4.2,
+      "community_discussion": true
+    }
+  }
+]

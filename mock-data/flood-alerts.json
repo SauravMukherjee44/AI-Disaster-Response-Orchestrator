@@ -1,0 +1,102 @@
+[
+  {
+    "source": "NOAA National Weather Service",
+    "timestamp": "2024-03-15T08:23:00Z",
+    "location": {
+      "name": "Houston, Texas",
+      "latitude": 29.7604,
+      "longitude": -95.3698
+    },
+    "severity": "critical",
+    "disaster_type": "flood",
+    "message": "FLASH FLOOD EMERGENCY for Harris County. Dam failure imminent at Addicks Reservoir. Immediate evacuation ordered for areas within 5 miles downstream. Life-threatening flooding expected within 30 minutes.",
+    "affected_population": 75000,
+    "metadata": {
+      "water_level": "15.2 feet above flood stage",
+      "rainfall_24h": "18 inches",
+      "wind_speed": "35 mph",
+      "alert_code": "FFW-TX-2024-0315",
+      "evacuation_routes": ["I-10 East", "US-290 North", "TX-99 Tollway"]
+    }
+  },
+  {
+    "source": "European Flood Awareness System",
+    "timestamp": "2024-03-15T11:45:00Z",
+    "location": {
+      "name": "Venice, Italy",
+      "latitude": 45.4408,
+      "longitude": 12.3155
+    },
+    "severity": "high",
+    "disaster_type": "flood",
+    "message": "Severe flooding alert for Venice and surrounding lagoon areas. High tide combined with storm surge reaching 1.8m above normal. Historic center under water. MOSE barriers activated but insufficient.",
+    "affected_population": 35000,
+    "metadata": {
+      "tide_level": "180 cm above datum",
+      "wind_direction": "Scirocco (SE)",
+      "duration_estimate": "8-12 hours",
+      "alert_code": "EFAS-IT-VE-001",
+      "historical_context": "Third highest tide since 1966"
+    }
+  },
+  {
+    "source": "Bangladesh Flood Forecasting Centre",
+    "timestamp": "2024-03-14T22:15:00Z",
+    "location": {
+      "name": "Sylhet Division, Bangladesh",
+      "latitude": 24.8949,
+      "longitude": 91.8687
+    },
+    "severity": "high",
+    "disaster_type": "flood",
+    "message": "Major riverine flooding in Sylhet Division as Surma and Kushiyara rivers exceed danger levels. Monsoon rains continue. Over 200 villages submerged. Emergency shelters activated.",
+    "affected_population": 450000,
+    "metadata": {
+      "river_level": "2.4m above danger level",
+      "rainfall_forecast": "Heavy rain next 48 hours",
+      "affected_districts": ["Sylhet", "Sunamganj", "Habiganj"],
+      "shelters_opened": 125,
+      "alert_code": "BFF-SYL-2024-03"
+    }
+  },
+  {
+    "source": "Australian Bureau of Meteorology",
+    "timestamp": "2024-03-15T03:30:00Z",
+    "location": {
+      "name": "Brisbane, Queensland",
+      "latitude": -27.4705,
+      "longitude": 153.0260
+    },
+    "severity": "medium",
+    "disaster_type": "flood",
+    "message": "Moderate flood warning for Brisbane River. Water levels rising due to upstream rainfall. Minor to moderate flooding expected in low-lying areas. Residents advised to prepare for possible evacuation.",
+    "affected_population": 12000,
+    "metadata": {
+      "peak_level_forecast": "3.5m",
+      "time_to_peak": "18 hours",
+      "rainfall_72h": "250mm upstream",
+      "alert_code": "BOM-QLD-BRI-FL-003",
+      "last_major_flood": "2011"
+    }
+  },
+  {
+    "source": "Indian Meteorological Department",
+    "timestamp": "2024-03-15T06:00:00Z",
+    "location": {
+      "name": "Mumbai, Maharashtra",
+      "latitude": 19.0760,
+      "longitude": 72.8777
+    },
+    "severity": "high",
+    "disaster_type": "flood",
+    "message": "Red alert issued for Mumbai as extremely heavy rainfall continues. Waterlogging reported across city. Local train services suspended. Mithi River overflowing. Stay indoors unless absolutely necessary.",
+    "affected_population": 8500000,
+    "metadata": {
+      "rainfall_24h": "375mm",
+      "wind_speed": "65 km/h",
+      "visibility": "Poor - less than 100m",
+      "alert_code": "IMD-MAH-MUM-RED-2024",
+      "services_affected": ["Railways", "Airports", "Roads"]
+    }
+  }
+]

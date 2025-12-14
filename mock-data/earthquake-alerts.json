@@ -1,0 +1,135 @@
+[
+  {
+    "source": "USGS Earthquake Hazards Program",
+    "timestamp": "2024-03-15T14:27:32Z",
+    "location": {
+      "name": "San Francisco Bay Area, California",
+      "latitude": 37.7749,
+      "longitude": -122.4194
+    },
+    "severity": "critical",
+    "disaster_type": "earthquake",
+    "message": "MAJOR EARTHQUAKE: Magnitude 7.2 struck San Francisco Bay Area at 2:27 PM local time. Epicenter 8km southwest of downtown SF. Depth 12km. Strong shaking felt across Northern California. Tsunami warning issued for coastal areas. Multiple structure collapses reported.",
+    "affected_population": 850000,
+    "metadata": {
+      "magnitude": 7.2,
+      "depth_km": 12,
+      "fault_line": "San Andreas Fault",
+      "intensity": "VIII - Severe shaking",
+      "aftershock_probability": "95% within 24 hours",
+      "event_id": "us7000m1ab",
+      "tsunami_warning": true,
+      "felt_reports": 45000
+    }
+  },
+  {
+    "source": "Japan Meteorological Agency",
+    "timestamp": "2024-03-15T09:15:00Z",
+    "location": {
+      "name": "Off the coast of Fukushima, Japan",
+      "latitude": 37.4221,
+      "longitude": 141.0327
+    },
+    "severity": "high",
+    "disaster_type": "earthquake",
+    "message": "Strong earthquake M6.8 detected off Fukushima coast. Shindo scale intensity 5 upper observed in coastal areas. Tsunami advisory issued - waves up to 1 meter expected. Nuclear facilities on high alert. Evacuations underway in low-lying coastal zones.",
+    "affected_population": 125000,
+    "metadata": {
+      "magnitude": 6.8,
+      "depth_km": 25,
+      "shindo_intensity": "5-upper",
+      "tsunami_height_forecast": "0.5-1.0 meters",
+      "nuclear_facilities": "All safe, monitoring continues",
+      "event_id": "JMA-2024-03-15-0915",
+      "aftershocks_detected": 12
+    }
+  },
+  {
+    "source": "European-Mediterranean Seismological Centre",
+    "timestamp": "2024-03-14T18:42:00Z",
+    "location": {
+      "name": "Southern Turkey near Syrian border",
+      "latitude": 37.0439,
+      "longitude": 37.3815
+    },
+    "severity": "critical",
+    "disaster_type": "earthquake",
+    "message": "Catastrophic earthquake M7.5 strikes southern Turkey near Gaziantep. Widespread destruction reported across multiple cities. Thousands of buildings collapsed. Mass casualties expected. International rescue teams mobilizing. Winter conditions complicating rescue efforts.",
+    "affected_population": 2000000,
+    "metadata": {
+      "magnitude": 7.5,
+      "depth_km": 18,
+      "fault_line": "East Anatolian Fault",
+      "temperature": "-5°C",
+      "aftershocks": "Major M6.4 aftershock 11 minutes later",
+      "event_id": "EMSC-20240314-184200",
+      "cross_border_impact": "Significant damage in northern Syria"
+    }
+  },
+  {
+    "source": "GeoNet New Zealand",
+    "timestamp": "2024-03-15T05:33:00Z",
+    "location": {
+      "name": "Wellington Region, New Zealand",
+      "latitude": -41.2865,
+      "longitude": 174.7762
+    },
+    "severity": "medium",
+    "disaster_type": "earthquake",
+    "message": "Moderate earthquake M5.6 felt strongly in Wellington and surrounding regions. Epicenter in Cook Strait. Light shaking across lower North Island. Some minor damage to older buildings. No tsunami threat. Residents advised to check homes for damage.",
+    "affected_population": 45000,
+    "metadata": {
+      "magnitude": 5.6,
+      "depth_km": 35,
+      "intensity": "MM VI - Strong",
+      "location": "Cook Strait",
+      "felt_reports": 8500,
+      "event_id": "2024p192837",
+      "building_code": "Most modern buildings undamaged"
+    }
+  },
+  {
+    "source": "National Seismological Center, Mexico",
+    "timestamp": "2024-03-15T01:18:00Z",
+    "location": {
+      "name": "Oaxaca, Mexico",
+      "latitude": 16.6706,
+      "longitude": -96.0000
+    },
+    "severity": "high",
+    "disaster_type": "earthquake",
+    "message": "Major earthquake M7.0 strikes Oaxaca region. Strong shaking felt in Mexico City 400km away. Multiple aftershocks ongoing. Coastal areas on tsunami watch. Power outages affecting 500k people. Emergency services overwhelmed. International assistance requested.",
+    "affected_population": 650000,
+    "metadata": {
+      "magnitude": 7.0,
+      "depth_km": 22,
+      "fault_line": "Cocos Plate subduction zone",
+      "mexico_city_intensity": "IV - Light to Moderate",
+      "aftershocks_24h": 47,
+      "event_id": "SSN-2024-03-15-0118",
+      "historical_context": "Similar to 2017 Puebla earthquake"
+    }
+  },
+  {
+    "source": "Indonesian Meteorological Agency",
+    "timestamp": "2024-03-14T23:45:00Z",
+    "location": {
+      "name": "West Java, Indonesia",
+      "latitude": -6.9272,
+      "longitude": 107.6369
+    },
+    "severity": "medium",
+    "disaster_type": "earthquake",
+    "message": "Moderate earthquake M5.8 hits West Java near Bandung. Shallow depth causing strong local shaking. Several buildings damaged. Landslides reported in mountainous areas. Hospitals treating injured. No tsunami threat.",
+    "affected_population": 180000,
+    "metadata": {
+      "magnitude": 5.8,
+      "depth_km": 8,
+      "intensity": "VII - Very strong",
+      "landslides": 15,
+      "affected_villages": 45,
+      "event_id": "BMKG-2024-0314-2345",
+      "injuries_reported": 120
+    }
+  }
+]

@@ -1,0 +1,88 @@
+id: disaster-ingestion
+namespace: disaster-response
+
+description: |
+  Kestra workflow for ingesting disaster data from multiple sources,
+  processing through AI summarization, and triggering RL-based prioritization
+
+inputs:
+  - name: disaster_title
+    type: STRING
+    required: true
+  - name: disaster_description
+    type: STRING
+    required: true
+  - name: disaster_type
+    type: STRING
+    required: true
+    defaults: earthquake
+  - name: severity
+    type: STRING
+    required: true
+    defaults: medium
+  - name: latitude
+    type: FLOAT
+    required: true
+  - name: longitude
+    type: FLOAT
+    required: true
+  - name: affected_population
+    type: INT
+    required: true
+
+tasks:
+  - id: ingest-disaster
+    type: io.kestra.plugin.core.http.Request
+    uri: "{{ secret('SUPABASE_URL') }}/functions/v1/kestra-webhook"
+    method: POST
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ secret('SUPABASE_ANON_KEY') }}"
+    body: |
+      {
+        "title": "{{ inputs.disaster_title }}",
+        "description": "{{ inputs.disaster_description }}",
+        "disaster_type": "{{ inputs.disaster_type }}",
+        "severity": "{{ inputs.severity }}",
+        "latitude": {{ inputs.latitude }},
+        "longitude": {{ inputs.longitude }},
+        "affected_population": {{ inputs.affected_population }}
+      }
+
+  - id: extract-disaster-id
+    type: io.kestra.plugin.core.flow.EachSequential
+    value: "{{ outputs['ingest-disaster'].body | jq '.disaster.id' }}"
+    tasks:
+      - id: generate-ai-summary
+        type: io.kestra.plugin.core.http.Request
+        uri: "{{ secret('SUPABASE_URL') }}/functions/v1/ai-summarize"
+        method: POST
+        headers:
+          Content-Type: application/json
+          Authorization: "Bearer {{ secret('SUPABASE_ANON_KEY') }}"
+        body: |
+          {
+            "disaster_id": "{{ parent.value }}"
+          }
+
+      - id: generate-rl-priorities
+        type: io.kestra.plugin.core.http.Request
+        uri: "{{ secret('SUPABASE_URL') }}/functions/v1/rl-prioritize"
+        method: POST
+        headers:
+          Content-Type: application/json
+          Authorization: "Bearer {{ secret('SUPABASE_ANON_KEY') }}"
+        body: |
+          {
+            "disaster_id": "{{ parent.value }}"
+          }
+
+  - id: log-completion
+    type: io.kestra.plugin.core.log.Log
+    message: "Disaster {{ inputs.disaster_title }} processed successfully with AI and RL analysis"
+
+triggers:
+  - id: schedule-monitoring
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "*/5 * * * *"
+    disabled: true

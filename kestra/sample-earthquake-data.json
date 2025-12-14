@@ -1,0 +1,80 @@
+{
+  "disaster_type": "earthquake",
+  "title": "Major Earthquake Strikes San Francisco Bay Area",
+  "description": "A powerful 7.2 magnitude earthquake struck the San Francisco Bay Area at 3:47 AM local time. The epicenter was located 15 miles northeast of Oakland. Significant damage to infrastructure reported across multiple cities. Thousands without power. Multiple building collapses reported in downtown areas. Highway 880 has structural damage. BART service suspended. Multiple fires reported in Richmond and Berkeley areas due to gas line ruptures.",
+  "location": {
+    "primary": "San Francisco Bay Area",
+    "affected_cities": [
+      "San Francisco",
+      "Oakland",
+      "Berkeley",
+      "Richmond",
+      "San Leandro",
+      "Alameda"
+    ],
+    "coordinates": {
+      "latitude": 37.8044,
+      "longitude": -122.2712
+    }
+  },
+  "time": {
+    "occurrence": "2024-12-14T03:47:00Z",
+    "reported": "2024-12-14T03:52:00Z"
+  },
+  "severity": {
+    "magnitude": 7.2,
+    "depth_km": 12,
+    "intensity": "Very Strong (VIII on Modified Mercalli Scale)"
+  },
+  "impact": {
+    "affected_population": 3500000,
+    "estimated_casualties": {
+      "deaths": 150,
+      "injuries": 2500,
+      "missing": 300
+    },
+    "displaced_persons": 50000,
+    "buildings_damaged": 8500,
+    "buildings_destroyed": 420
+  },
+  "infrastructure": {
+    "power_outages": 750000,
+    "water_main_breaks": 200,
+    "gas_line_ruptures": 45,
+    "roads_blocked": 85,
+    "bridges_damaged": 12,
+    "hospital_status": {
+      "operational": 15,
+      "damaged": 8,
+      "evacuated": 3
+    }
+  },
+  "immediate_needs": [
+    "Search and rescue operations for collapsed buildings",
+    "Emergency medical services and field hospitals",
+    "Temporary shelter for displaced residents",
+    "Water and food supplies",
+    "Power restoration",
+    "Fire suppression",
+    "Structural safety inspections"
+  ],
+  "hazards": {
+    "primary": [
+      "Building collapse",
+      "Gas fires",
+      "Structural damage"
+    ],
+    "secondary": [
+      "Aftershocks expected",
+      "Potential tsunami risk (low)",
+      "Hazmat releases from industrial areas",
+      "Contaminated water supply"
+    ]
+  },
+  "weather": {
+    "current": "Clear, 52°F",
+    "forecast": "Rain expected in 48 hours"
+  },
+  "source": "USGS, Local Emergency Operations Centers",
+  "verified": true
+}

@@ -1,0 +1,333 @@
+id: ai-agent-disaster-analysis
+namespace: disaster-response
+description: |
+  Advanced Kestra workflow using AI Agents to intelligently process disaster data.
+
+  This workflow:
+  1. Ingests disaster data from JSON files or API sources
+  2. Uses AI Agent to analyze and summarize the disaster situation
+  3. Uses AI Agent to identify priority actions (rescue, medical, logistics)
+  4. Outputs structured JSON with severity, priority areas, and recommendations
+  5. Stores results in Supabase for the response dashboard
+
+inputs:
+  - name: data_source
+    type: STRING
+    required: false
+    defaults: "file"
+    description: "Source type: 'file', 'api', or 'webhook'"
+
+  - name: json_file_path
+    type: STRING
+    required: false
+    description: "Path to JSON file containing disaster data"
+
+  - name: api_endpoint
+    type: STRING
+    required: false
+    description: "API endpoint to fetch disaster data"
+
+tasks:
+  # Task 1: Fetch disaster data from various sources
+  - id: fetch-disaster-data
+    type: io.kestra.plugin.core.flow.Switch
+    value: "{{ inputs.data_source }}"
+    cases:
+      file:
+        - id: read-json-file
+          type: io.kestra.plugin.core.http.Request
+          uri: "{{ inputs.json_file_path }}"
+          method: GET
+
+      api:
+        - id: fetch-from-api
+          type: io.kestra.plugin.core.http.Request
+          uri: "{{ inputs.api_endpoint }}"
+          method: GET
+          headers:
+            Accept: application/json
+
+      webhook:
+        - id: use-webhook-data
+          type: io.kestra.plugin.core.log.Log
+          message: "Using data from webhook trigger"
+
+  # Task 2: AI Agent - Disaster Situation Analysis
+  - id: ai-analyze-situation
+    type: io.kestra.plugin.openai.ChatCompletion
+    description: "AI Agent analyzes disaster data to extract key information"
+    apiKey: "{{ secret('OPENAI_API_KEY') }}"
+    model: gpt-4o-mini
+    messages:
+      - role: system
+        content: |
+          You are an expert disaster response analyst AI. Analyze the provided disaster data and extract:
+
+          1. SEVERITY ASSESSMENT (critical/high/medium/low)
+          2. AFFECTED LOCATIONS (list all specific areas)
+          3. PRIMARY HAZARDS (immediate dangers)
+          4. SECONDARY RISKS (potential follow-on disasters)
+          5. POPULATION IMPACT (estimated numbers and demographics)
+          6. INFRASTRUCTURE DAMAGE (roads, hospitals, utilities)
+          7. TIME SENSITIVITY (how urgent is the response)
+
+          Provide a comprehensive yet concise analysis. Output ONLY valid JSON.
+
+      - role: user
+        content: |
+          Analyze this disaster data:
+
+          {{ outputs['fetch-disaster-data'].body | json }}
+
+          Output format:
+          {
+            "severity_level": "critical|high|medium|low",
+            "severity_score": 0-100,
+            "affected_locations": ["location1", "location2"],
+            "primary_hazards": ["hazard1", "hazard2"],
+            "secondary_risks": ["risk1", "risk2"],
+            "estimated_affected_population": number,
+            "vulnerable_groups": ["group1", "group2"],
+            "infrastructure_status": {
+              "roads": "operational|damaged|destroyed",
+              "hospitals": "operational|damaged|destroyed",
+              "power": "operational|damaged|destroyed",
+              "water": "operational|damaged|destroyed"
+            },
+            "time_criticality": "immediate|urgent|moderate",
+            "summary": "2-3 sentence overview"
+          }
+
+  # Task 3: Parse AI analysis results
+  - id: parse-situation-analysis
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: save-analysis
+        type: io.kestra.plugin.core.storage.LocalFiles
+        inputs:
+          analysis.json: "{{ outputs['ai-analyze-situation'].choices[0].message.content }}"
+
+      - id: extract-severity
+        type: io.kestra.plugin.core.log.Log
+        message: |
+          Severity Level: {{ outputs['ai-analyze-situation'].choices[0].message.content | jq '.severity_level' }}
+          Affected Population: {{ outputs['ai-analyze-situation'].choices[0].message.content | jq '.estimated_affected_population' }}
+
+  # Task 4: AI Agent - Priority Action Determination
+  - id: ai-determine-priorities
+    type: io.kestra.plugin.openai.ChatCompletion
+    description: "AI Agent determines priority actions based on analysis"
+    apiKey: "{{ secret('OPENAI_API_KEY') }}"
+    model: gpt-4o-mini
+    temperature: 0.3
+    messages:
+      - role: system
+        content: |
+          You are an expert emergency operations coordinator. Based on the disaster analysis,
+          determine the TOP priority actions across three categories:
+
+          1. RESCUE OPERATIONS (search & rescue, evacuation, trapped persons)
+          2. MEDICAL RESPONSE (triage, medical care, field hospitals)
+          3. LOGISTICS (supplies, shelter, transportation, communications)
+
+          For EACH action, provide:
+          - Specific action description
+          - Priority score (0-100, where 100 is most critical)
+          - Estimated impact (number of people helped)
+          - Required resources
+          - Time sensitivity (immediate/hours/days)
+          - Geographic priority areas
+
+          Be specific and actionable. Output ONLY valid JSON.
+
+      - role: user
+        content: |
+          Based on this disaster analysis:
+
+          {{ outputs['ai-analyze-situation'].choices[0].message.content }}
+
+          Determine priority actions. Output format:
+          {
+            "priority_areas": ["area1", "area2", "area3"],
+            "actions": {
+              "rescue": [
+                {
+                  "description": "Specific rescue action",
+                  "priority_score": 0-100,
+                  "estimated_impact": number,
+                  "required_resources": ["resource1", "resource2"],
+                  "time_sensitivity": "immediate|hours|days",
+                  "target_locations": ["location1"]
+                }
+              ],
+              "medical": [
+                {
+                  "description": "Specific medical action",
+                  "priority_score": 0-100,
+                  "estimated_impact": number,
+                  "required_resources": ["resource1", "resource2"],
+                  "time_sensitivity": "immediate|hours|days",
+                  "target_locations": ["location1"]
+                }
+              ],
+              "logistics": [
+                {
+                  "description": "Specific logistics action",
+                  "priority_score": 0-100,
+                  "estimated_impact": number,
+                  "required_resources": ["resource1", "resource2"],
+                  "time_sensitivity": "immediate|hours|days",
+                  "target_locations": ["location1"]
+                }
+              ]
+            },
+            "overall_strategy": "Brief strategic overview",
+            "critical_gaps": ["gap1", "gap2"]
+          }
+
+  # Task 5: Combine and structure final output
+  - id: create-structured-output
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: combine-results
+        type: io.kestra.plugin.scripts.shell.Commands
+        runner: PROCESS
+        commands:
+          - |
+            cat > combined_output.json << 'EOF'
+            {
+              "analysis_timestamp": "{{ now() }}",
+              "data_source": "{{ inputs.data_source }}",
+              "situation_analysis": {{ outputs['ai-analyze-situation'].choices[0].message.content }},
+              "priority_actions": {{ outputs['ai-determine-priorities'].choices[0].message.content }},
+              "workflow_metadata": {
+                "workflow_id": "{{ flow.id }}",
+                "execution_id": "{{ execution.id }}",
+                "processed_by": "kestra-ai-agent",
+                "version": "2.0"
+              }
+            }
+            EOF
+            cat combined_output.json
+
+      - id: save-to-storage
+        type: io.kestra.plugin.core.storage.LocalFiles
+        outputs:
+          - "combined_output.json"
+
+  # Task 6: Store in Supabase Database
+  - id: store-in-database
+    type: io.kestra.plugin.core.http.Request
+    description: "Store analysis results in Supabase"
+    uri: "{{ secret('SUPABASE_URL') }}/functions/v1/kestra-webhook"
+    method: POST
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ secret('SUPABASE_ANON_KEY') }}"
+    body: |
+      {
+        "source": "kestra-ai-agent",
+        "analysis": {{ outputs['ai-analyze-situation'].choices[0].message.content }},
+        "priority_actions": {{ outputs['ai-determine-priorities'].choices[0].message.content }},
+        "workflow_execution_id": "{{ execution.id }}"
+      }
+
+  # Task 7: Generate priority actions in database
+  - id: create-priority-actions
+    type: io.kestra.plugin.core.flow.EachSequential
+    value: |
+      {{
+        [
+          outputs['ai-determine-priorities'].choices[0].message.content.actions.rescue,
+          outputs['ai-determine-priorities'].choices[0].message.content.actions.medical,
+          outputs['ai-determine-priorities'].choices[0].message.content.actions.logistics
+        ] | flatten
+      }}
+    tasks:
+      - id: insert-action
+        type: io.kestra.plugin.core.http.Request
+        uri: "{{ secret('SUPABASE_URL') }}/rest/v1/priority_actions"
+        method: POST
+        headers:
+          Content-Type: application/json
+          Authorization: "Bearer {{ secret('SUPABASE_ANON_KEY') }}"
+          apikey: "{{ secret('SUPABASE_ANON_KEY') }}"
+          Prefer: return=representation
+        body: |
+          {
+            "disaster_id": "{{ outputs['store-in-database'].body.disaster.id }}",
+            "action_type": "{{ parent.value.type }}",
+            "description": "{{ parent.value.description }}",
+            "priority_score": {{ parent.value.priority_score }},
+            "estimated_impact": {{ parent.value.estimated_impact }},
+            "deadline": "{{ now() | dateAdd(1, 'DAYS') }}",
+            "status": "pending"
+          }
+
+  # Task 8: Log final results
+  - id: log-completion
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      ✅ Disaster Analysis Complete
+
+      Severity: {{ outputs['ai-analyze-situation'].choices[0].message.content | jq '.severity_level' }}
+      Affected: {{ outputs['ai-analyze-situation'].choices[0].message.content | jq '.estimated_affected_population' }} people
+      Priority Actions: {{ outputs['ai-determine-priorities'].choices[0].message.content | jq '.actions | length' }}
+
+      Full results stored in Supabase and available at:
+      {{ kv('DASHBOARD_URL') }}/disasters
+
+  # Task 9: Send notifications (optional)
+  - id: send-alerts
+    type: io.kestra.plugin.core.flow.If
+    condition: |
+      {{ outputs['ai-analyze-situation'].choices[0].message.content | jq '.severity_level' == 'critical' }}
+    then:
+      - id: alert-critical-disaster
+        type: io.kestra.plugin.core.log.Log
+        level: ERROR
+        message: |
+          🚨 CRITICAL DISASTER ALERT
+
+          {{ outputs['ai-analyze-situation'].choices[0].message.content | jq '.summary' }}
+
+          Immediate action required!
+
+# Outputs that can be used by other workflows
+outputs:
+  - id: situation_analysis
+    value: "{{ outputs['ai-analyze-situation'].choices[0].message.content }}"
+
+  - id: priority_actions
+    value: "{{ outputs['ai-determine-priorities'].choices[0].message.content }}"
+
+  - id: disaster_id
+    value: "{{ outputs['store-in-database'].body.disaster.id }}"
+
+# Triggers
+triggers:
+  # Schedule regular checks of disaster data sources
+  - id: scheduled-monitoring
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "*/15 * * * *"
+    disabled: true
+    inputs:
+      data_source: "api"
+      api_endpoint: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_day.geojson"
+
+  # Webhook trigger for real-time disaster reports
+  - id: webhook-trigger
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "disaster-alert-webhook"
+    disabled: false
+
+# Error handling
+errors:
+  - id: handle-errors
+    type: io.kestra.plugin.core.log.Log
+    level: ERROR
+    message: |
+      ❌ Workflow failed: {{ error.message }}
+
+      Task: {{ error.taskId }}
+      Execution: {{ execution.id }}
