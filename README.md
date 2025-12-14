@@ -380,11 +380,6 @@ Target: 80%+ coverage for critical paths
 4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open Pull Request
 
----
-
-## Team
-
-Built for [Hackathon Name] by [Your Team]
 
 ---
 
@@ -408,7 +403,6 @@ MIT License - see [LICENSE](LICENSE) for details
 
 - Documentation: See `/docs` directory
 - Issues: GitHub Issues
-- Email: team@example.com
 
 ---
 
