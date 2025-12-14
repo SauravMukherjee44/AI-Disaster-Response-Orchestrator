@@ -1,0 +1,19 @@
+reviews:
+  auto_review: true
+  review_status: true
+
+language:
+  - javascript
+  - typescript
+  - python
+  - yaml
+
+style_guide: "clean, readable, production-quality"
+
+documentation:
+  required: true
+
+security:
+  enabled: true
+
+severity_threshold: low
